@@ -36,18 +36,59 @@ layout: default
         
         {% if page.collection == 'teaching' %}
           <p> {{ page.type }}, <i>{{ page.venue }}</i>, {{ page.date | default: "1900-01-01" | date: "%Y" }} </p>
+        <!-- dissertation -->
+        {% elsif page.dissertation %}
+          <p><a href='..\files\dissertation.pdf'>(pdf)</a></p>
+        <!-- articles not submitted -->
+        {% elsif page.submittednotaccepted %}
+          <p>
+          {% if page.coauthor %}
+            With {{page.coauthor}}; submitted
+          {% else %}
+            Submitted
+          {% endif %}
+          <br>(<a href='https://arxiv.org/abs/{{page.arxiv}}'>arXiv:{{page.arxiv}}</a>)
+          </p>
+        <!-- articles to appear -->
+        {% elsif page.toappear %}
+          <p>
+          {% if page.coauthor %}
+            With {{page.coauthor}}; to appear in <i>{{ page.venue }}</i>
+          {% else %}
+            Submitted
+          {% endif %}
+          <br>(<a href='https://arxiv.org/abs/{{page.arxiv}}'>arXiv:{{page.arxiv}}</a>)
+          </p>
+        <!-- already published articles -->
         {% elsif page.venue and page.date %}
-          <p>Published in <i>{{ page.venue }}</i>, {{ page.date | default: "1900-01-01" | date: "%Y" }} </p>
+          <p>Published in <i>{{ page.venue }}</i>, {{ page.date | default: "1900-01-01" | date: "%Y" }}{% if page.coauthor %}, with {{ page.coauthor }}{% endif %}
+          {% if page.paperurl and page.arxiv %}
+            <br>(<a href='{{page.paperurl}}'>{{page.paperurlsource}}</a>
+            |
+            <a href='https://arxiv.org/abs/{{page.arxiv}}'>arXiv:{{page.arxiv}}</a>)
+          {% elsif page.paperurl %}
+            <br>(<a href='{{page.paperurl}}'>{{page.paperurlsource}}</a>)
+          {% elsif page.arxiv %}
+            <br>(<a href='https://arxiv.org/abs/{{page.arxiv}}'>arXiv:{{page.arxiv}}</a>)
+          {% endif %}
+          </p>
         {% elsif page.date %}
-          <p class="page__date"><strong><i class="fa fa-fw fa-calendar" aria-hidden="true"></i> {{ site.data.ui-text[site.locale].date_label | default: "Published:" }}</strong> <time datetime="{{ page.date | date_to_xmlschema }}">{{ page.date | default: "1900-01-01" | date: "%B %d, %Y" }}</time></p>
+          <p class="page__date"><strong><i class="fa fa-fw fa-calendar" aria-hidden="true"></i> {{ site.data.ui-text[site.locale].date_label | default: "Published:" }}</strong> <time datetime="{{ page.date | date_to_xmlschema }}">{{ page.date | default: "1900-01-01" | date: "%B %d, %Y" }}</time></p>          
+        {% endif %}
+      
+
+        {% if page.abstract %}
+          <h3>Abstract</h3>
+          <p>{{ page.abstract }}</p>
         {% endif %}
         
-             
+        <!--
         {% if page.citation and page.paperurl %}
           <p>Recommended citation: {{ page.citation }} <a href="{{ page.paperurl }}"><u>{{ page.paperurl }}</u></a></p>
         {% elsif page.citation %}
           <p>Recommended citation: {{ page.citation }} </p>
         {% endif %}
+        -->
     
         </header>
       {% endunless %}

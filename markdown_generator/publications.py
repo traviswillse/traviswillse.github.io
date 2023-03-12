@@ -1,4 +1,4 @@
-
+"""
 # coding: utf-8
 
 # # Publications markdown generator for academicpages
@@ -106,3 +106,4 @@ for row, item in publications.iterrows():
         f.write(md)
 
 
+"""
